@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static java.lang.Math.*;
+
 public class MethodTest {
 	
 	public static void main(String[] args) {
@@ -25,7 +27,29 @@ public class MethodTest {
 		
 		CreditCardForm c = new CreditCardForm();
 		System.out.println(c.expirationYear);
-
+		
+		// 정적 임포트
+		double x = 2;
+		double y = 3;
+		System.out.println(pow(x, 2));
+		System.out.println(pow(y, 2));
+		System.out.println(sqrt(pow(x, 2) + pow(y, 2)));
+		
+		double r = sqrt(pow(x, 2) + pow(y, 2));
+		
+		// 정적 중첩 클래스
+		Invoice invoice = new Invoice();
+		invoice.addItem("test", 1, 12122);
+		invoice.addItem("test", 1, 12122);
+		invoice.addItem("test", 1, 12122);
+		System.out.println(invoice.items.size());
+		
+		Invoice2 newItem = new Invoice2();
+		Invoice2.Item item = new Invoice2.Item("test", 1, 22);
+		newItem.add(item);
+		newItem.add(item);
+		System.out.println(newItem.items.size());
+		
 	}
 	
 	static class Employee{
@@ -96,5 +120,37 @@ public class MethodTest {
 			}
 		}
 		
+	}
+	
+	static class Invoice{
+		private static class Item{
+			String description;
+			int quantity;
+			double unitPrice;
+			
+		}
+		private ArrayList<Item> items = new ArrayList<>();
+		public void addItem(String description, int quantity, double unitPrice) {
+			Item newItem = new Item();
+			items.add(newItem);
+		}
+	}
+	
+	static class Invoice2{
+		public static class Item{
+			String description;
+			int quantity;
+			double unitPrice;
+			
+			public Item(String description, int quantity, double unitPrice) {
+				this.description = description;
+				this.quantity = quantity;
+				this.unitPrice = unitPrice;
+			}
+		}
+		private ArrayList<Item> items = new ArrayList<>();
+		public void add(Item item) {
+			items.add(item);
+		}
 	}
 }
