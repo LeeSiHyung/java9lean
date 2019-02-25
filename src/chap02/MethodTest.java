@@ -1,10 +1,11 @@
 package chap02;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
-
-import static java.lang.Math.*;
 
 public class MethodTest {
 	
@@ -49,6 +50,15 @@ public class MethodTest {
 		newItem.add(item);
 		newItem.add(item);
 		System.out.println(newItem.items.size());
+		
+		// 내부 클래스
+		Network myFace = new Network();
+		Network.Member fred2 = myFace.enroll("Fred");
+		// 내부 클래스의 각 객체는 외부 클래스의 객체에 대한 참조를 포함한다.
+		System.out.println(myFace.members.size());
+		fred2.deactivate();
+		System.out.println(myFace.members.size());
+		
 		
 	}
 	
@@ -147,10 +157,47 @@ public class MethodTest {
 				this.quantity = quantity;
 				this.unitPrice = unitPrice;
 			}
+			
+			// 정적 중첩 클래스는 내부에서 외부 객체의 메소드에 직접 접근이 불가한다.
+			public void remove() {
+				// items.remove(this);
+			}
 		}
 		private ArrayList<Item> items = new ArrayList<>();
 		public void add(Item item) {
 			items.add(item);
+		}
+	}
+	
+	
+	static class Network{
+		public class Member{
+			private String name;
+			private ArrayList<Member> friends;
+			
+			public Member(String name) {
+				this.name = name;
+				friends = new ArrayList<>();
+			}
+			
+			public void deactivate() {
+				// 정적 중첩 클래스와 다르게 외부 클래스 인스턴스 변수에 직접 접근이 가능하다.
+				// members.remove(this);
+				unenroll(this);
+				
+			}
+		}
+		
+		private ArrayList<Member> members = new ArrayList<>();
+		
+		public Member enroll(String name) {
+			Member newMember = new Member(name);
+			members.add(newMember);
+			return newMember;
+		}
+		
+		public void unenroll(Member m) {
+			members.remove(m);
 		}
 	}
 }
