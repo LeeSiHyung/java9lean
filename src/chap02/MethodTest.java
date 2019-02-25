@@ -59,7 +59,7 @@ public class MethodTest {
 		fred2.deactivate();
 		System.out.println(myFace.members.size());
 		
-		
+		System.out.println(fred2.belongsTo(myFace));
 	}
 	
 	static class Employee{
@@ -183,15 +183,20 @@ public class MethodTest {
 			public void deactivate() {
 				// 정적 중첩 클래스와 다르게 외부 클래스 인스턴스 변수에 직접 접근이 가능하다.
 				// members.remove(this);
-				unenroll(this);
-				
+				// unenroll(this);
+				Network.this.members.remove(this);
+			}
+			
+			public boolean belongsTo(Network n) { 
+				return Network.this == n;
 			}
 		}
 		
 		private ArrayList<Member> members = new ArrayList<>();
 		
 		public Member enroll(String name) {
-			Member newMember = new Member(name);
+			// Member newMember = new Member(name);
+			Member newMember = this.new Member(name);
 			members.add(newMember);
 			return newMember;
 		}
